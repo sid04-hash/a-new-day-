@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>And Then Morning Came — Chapter Two</title>
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap");
+  :root{
+    --bg:#090407;
+    --panel:#13070d;
+    --text:#f7e9ed;
+    --muted:#b997a2;
+    --accent:#c94f70;
+    --accent2:#ef8da6;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%;background:var(--bg)}
+  body{
+    font-family:"Cormorant Garamond", Georgia, "Times New Roman", serif;
+    color:var(--text);
+    overflow-x:hidden;
+    overflow-y:auto;
+  }
+   .app{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:22px;
+    overflow:visible;
+    background:
+      radial-gradient(circle at 50% 20%,rgba(137,28,57,.18),transparent 38%),
+      radial-gradient(circle at 20% 80%,rgba(94,17,39,.12),transparent 35%),
+      var(--bg);
+  }
+  .book{
+    position:relative;
+    width:min(900px,100%);
+    min-height:calc(100vh - 44px);
+    border:1px solid rgba(211,93,121,.22);
+    border-radius:24px;
+    overflow:hidden;
+    background:linear-gradient(145deg,rgba(28,9,17,.96),rgba(10,4,8,.98));
+    box-shadow:0 25px 80px rgba(0,0,0,.6),0 0 70px rgba(151,31,66,.12);
+  }
+  .topline{
+    position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),transparent);
+  }
+
+  .romance-bg{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+    z-index:0;
+  }
+  .romance-bg span{
+    position:absolute;
+    display:block;
+    opacity:.42;
+    filter:drop-shadow(0 0 8px rgba(232,116,145,.18));
+    animation:floatRomance 9s ease-in-out infinite;
+    user-select:none;
+  }
+  .romance-bg .heart{color:#e36b8c}
+  .romance-bg .heart2{color:#f19ab0}
+  .romance-bg .sparkle{color:#f2d5df}
+  .romance-bg .star{color:#d99aaf}
+  .romance-bg .kiss{color:#e88aa3}
+
+  .romance-bg span:nth-child(1){left:7%;top:16%;font-size:30px;animation-delay:-2s}
+  .romance-bg span:nth-child(2){left:19%;top:72%;font-size:23px;animation-delay:-6s}
+  .romance-bg span:nth-child(3){left:84%;top:20%;font-size:27px;animation-delay:-4s}
+  .romance-bg span:nth-child(4){left:91%;top:68%;font-size:22px;animation-delay:-7s}
+  .romance-bg span:nth-child(5){left:12%;top:45%;font-size:20px;animation-delay:-1s}
+  .romance-bg span:nth-child(6){left:76%;top:48%;font-size:31px;animation-delay:-5s}
+  .romance-bg span:nth-child(7){left:34%;top:12%;font-size:19px;animation-delay:-8s}
+  .romance-bg span:nth-child(8){left:65%;top:82%;font-size:24px;animation-delay:-3s}
+  .romance-bg span:nth-child(9){left:48%;top:7%;font-size:18px;animation-delay:-6.5s}
+  .romance-bg span:nth-child(10){left:4%;top:88%;font-size:21px;animation-delay:-4.5s}
+
+  @keyframes floatRomance{
+    0%,100%{transform:translate3d(0,0,0) rotate(-4deg)}
+    50%{transform:translate3d(8px,-15px,0) rotate(5deg)}
+  }
+  .page > *:not(.romance-bg){
+    position:relative;
+    z-index:1;
+  }
+
+  .page{
+    min-height:calc(100vh - 44px);
+    padding:80px 70px 120px;
+    height:auto;
+    overflow:visible;
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    align-items:flex-start;
+    text-align:center;
+    position:relative;
+  }
+  .page.active{display:flex;animation:fade .55s ease}
+  .center{align-items:center}
+  .eyebrow{
+    color:var(--accent2);
+    text-transform:uppercase;
+    letter-spacing:.34em;
+    font-size:.78rem;
+    margin-bottom:22px;
+  }
+  h1{
+    margin:0;
+    font-size:clamp(3rem,8vw,6.2rem);
+    line-height:.98;
+    font-weight:500;
+    text-shadow:0 0 35px rgba(219,71,108,.18);
+  }
+  .ornament{
+    color:#a84c67;
+    font-size:1.15rem;
+    letter-spacing:.45em;
+    margin:30px 0 28px;
+  }
+  .page h2{
+    font-family:"Cormorant Garamond", Georgia, "Times New Roman", serif;
+    font-size:clamp(2.35rem,5vw,3.65rem);
+    line-height:1.12;
+    font-weight:500;
+    letter-spacing:.01em;
+    color:#f8e7ec;
+    margin:0;
+    text-shadow:0 0 30px rgba(220,92,124,.18);
+  }
+
+  .divider{
+    width:72px;
+    height:1px;
+    margin:20px auto 26px;
+    background:linear-gradient(90deg,transparent,var(--accent2),transparent);
+    opacity:.7;
+  }
+  .page p:not(.quote){
+    max-width:820px;
+    color:#d8c1c8;
+    font-family:"Cormorant Garamond", Georgia, "Times New Roman", serif;
+    font-size:clamp(1.25rem,2.35vw,1.65rem);
+    font-weight:500;
+    line-height:1.65;
+    letter-spacing:.01em;
+    margin:0 auto 27px;
+    text-align:center;
+  }
+
+  .quote{
+    max-width:900px;
+    color:#f0dfe5;
+    font-family:"Cormorant Garamond", Georgia, "Times New Roman", serif;
+    font-size:clamp(1.65rem,3.2vw,2.35rem);
+    font-weight:500;
+    line-height:1.35;
+    letter-spacing:.005em;
+    font-style:italic;
+    margin:2px auto 0;
+    text-align:center;
+  }
+  .buttons{margin-top:38px}
+  button{
+    font:inherit;
+    cursor:pointer;
+    color:var(--text);
+    border:1px solid rgba(222,105,133,.35);
+    background:rgba(91,20,39,.28);
+    border-radius:999px;
+    padding:14px 28px;
+    transition:.25s ease;
+  }
+  button:hover{
+    transform:translateY(-2px);
+    border-color:rgba(239,141,166,.75);
+    background:rgba(121,28,54,.42);
+    box-shadow:0 10px 30px rgba(133,25,58,.18);
+  }
+  .primary{
+    background:linear-gradient(135deg,#8d2949,#c84e70);
+    border-color:rgba(255,180,197,.28);
+    box-shadow:0 10px 30px rgba(150,31,65,.22);
+  }
+  .placeholder{
+    color:#6f4d58;
+    font-size:.9rem;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+  }
+
+
+  .page .buttons{
+    position:relative;
+    z-index:3;
+    margin-top:34px;
+    margin-bottom:28px;
+  }
+  .page .nav{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:20px;
+    z-index:4;
+  }
+  .page .buttons button,
+  .page .nav button{
+    position:relative;
+    z-index:5;
+  }
+
+  .nav{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:28px;
+    display:flex;
+    justify-content:center;
+  }
+  .back{
+    border:0;
+    background:transparent;
+    color:#c98b9d;
+    padding:9px 18px;
+    font-size:1rem;
+    letter-spacing:.08em;
+    opacity:.9;
+  }
+  .back .heart{
+    display:inline-block;
+    margin-right:7px;
+    color:#df6f8d;
+    font-size:1.05rem;
+    transition:.25s ease;
+  }
+  .back:hover{
+    background:rgba(126,30,56,.16);
+    box-shadow:none;
+    transform:none;
+    color:#f1c1ce;
+  }
+  .back:hover .heart{
+    transform:scale(1.18);
+  }
+
+  @keyframes fade{
+    from{opacity:0;transform:translateY(10px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  @media(max-width:620px){
+    .app{padding:10px}
+    .book,.page{min-height:calc(100vh - 20px)}
+    .page{padding:48px 25px 105px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <main class="book" aria-live="polite">
+    <div class="topline"></div>
+
+    <!-- PAGE 1 -->
+    <section class="page active center" data-page="0">
+      <div class="eyebrow">CHAPTER TWO</div>
+      <h1>And Then<br>Morning Came</h1>
+      <div class="ornament">✦ · ✦ · ✦</div>
+      <p class="quote">“The night ended in each other's arms. But that wasn't the end of the story.”</p>
+      <div class="buttons">
+        <button class="primary" onclick="goTo(1)">next →</button>
+      </div>
+    </section>
+
+    <!-- BLANK PAGES -->
+    <section class="page center" data-page="1">
+      <div class="romance-bg" aria-hidden="true">
+        <span class="heart">♥</span>
+        <span class="heart2">♡</span>
+        <span class="sparkle">✦</span>
+        <span class="star">★</span>
+        <span class="kiss">💋</span>
+        <span class="heart">❤</span>
+        <span class="sparkle">✧</span>
+        <span class="heart2">💕</span>
+        <span class="star">☆</span>
+        <span class="kiss">💋</span>
+      </div>
+
+      <div class="eyebrow">the first morning</div>
+      <h2>The First Thing I See Is You</h2>
+      <div class="divider"></div>
+      <p>For a few quiet seconds, neither of us has to do anything. No plans.</p>
+      <p>Just you in my arms, still sleepy, hair a little messy, eyes not quite ready for the morning yet.</p>
+      <p class="quote">And honestly? I think I'd want to stay in that moment for a while.</p>
+      <p>I wish you Good Morninggg Jaaannnuuuuu, tell you it's time get up, you ask for 5 more minutes, I steal a kiss from your lips, kiss your forehead, pull you closer make sure you are covered under the sheets and we take another nap.</p>
+      <p>After some more time we wake up look into each other's eyes I will say <p class="quote">I love You My Babbyyy</p></p>
+      <p>As you start to get up I pull you back in the sheets, grab you pull you close, making your heart race, look in your eyes and lean in to kiss you.</p>
+      <p>Run my hands all over your bare body and make you grab my cock, you feel it getting hard as we kiss, I slowly pull you up at my height dig in your neck and grab my cock make the tip slowly tease your pussy, letting the tip slide in and pull it out bite your neck.</p>
+      <p>Maybe you ask are we gonna fuck again feeling aroused? And I say yes I want to do it once more. We both stay side by side as I slide my cock inside your pussy. Start making it go in and out gently just pushing it deep and hear your sighs and small grunts.</p>
+      <p>I start creasing your boob and sucking it while you hold my head in your arms digging my face in your boobs.</p>
+      <p>I then make you lay down can come on top grabbing your neck and fucking your pussy making your pussy drip all over my balls. We fuck softly yet deep thrusts till we reach the peak and cum.</p>
+      <p>I then lay down on you kiss you say I Love You My Babyygurll, tuck you in the sheets ask you to wait a minute, you rest there for a while.</p>
+      <p>Then I come back help you wear my shirt and my shorts kissing you multiple time, making sure you feel the depths of my love.</p>
+
+      <div class="buttons">
+        <button class="primary" onclick="goTo(2)">next →</button>
+      </div>
+
+      <div class="nav">
+        <button class="back" onclick="goTo(0)"><span class="heart">♥</span>back</button>
+      </div>
+    </section>    <section class="page center" data-page="2">
+      <div class="romance-bg" aria-hidden="true">
+        <span class="heart">♥</span>
+        <span class="heart2">♡</span>
+        <span class="sparkle">✦</span>
+        <span class="star">★</span>
+        <span class="kiss">💋</span>
+        <span class="heart">❤</span>
+        <span class="sparkle">✧</span>
+        <span class="heart2">💕</span>
+        <span class="star">☆</span>
+        <span class="kiss">💋</span>
+      </div>
+
+      <div class="eyebrow">THE MORNING</div>
+      <h2>Then Real Life Starts</h2>
+      <div class="divider"></div>
+      <p>I take you to the washroom, bring out your brush apply paste to it, hold your chin like a babyyy like my babyyy, I help you with brushing your teeth.</p>
+      <p>Then you freshen up a little, while I go to the kitchen and prepare coffee for both of us, and maybe a toast or a simple light sandwich.</p>
+      <p>Then you come out in the hall, maybe near me in the kitchen and yes I want you to come near me see what and how am I preparing it.</p>
+      <p class="quote">And yes you would look so sexy in my shirt and shorts with nothing underneath.</p>
+      <p>Then we take our breakfast to the sofa sit there play any soft songs while I keep my arm around your waist. And uff you will still look sleepy and you look lovely when you are sleepy.</p>
+      <p>I would watch your lips touching the brim of the mug wanting to take the mug away and kiss you, taste the coffee off your lips, your lips are just wayy too kissable.</p>
+      <p>The time passes talking about things, things that happened last night or today morning or anyhthing else from any moment of our lives.</p>
+      <p>After finishing the breakfast we stay there, cause maybe the nest part is where nobody is trying to make anything happen. Just being close and knowing the other person is there.</p>
+      <p class="quote">And somehow an ordinary morning becomes something I'll always remember.</p>
+
+      <div class="buttons">
+        <button class="primary" onclick="goTo(3)">next →</button>
+      </div>
+
+      <div class="nav">
+        <button class="back" onclick="goTo(1)"><span class="heart">♥</span>back</button>
+      </div>
+    </section>
+
+    <section class="page center" data-page="3">
+      <div class="romance-bg" aria-hidden="true">
+        <span class="heart">♥</span>
+        <span class="heart2">♡</span>
+        <span class="sparkle">✦</span>
+        <span class="star">★</span>
+        <span class="kiss">💋</span>
+        <span class="heart">❤</span>
+        <span class="sparkle">✧</span>
+        <span class="heart2">💕</span>
+        <span class="star">☆</span>
+        <span class="kiss">💋</span>
+      </div>
+
+      <div class="eyebrow">The Day</div>
+      <h2>And We Simply Live It</h2>
+      <div class="divider"></div>
+      <p>Not every moment has to be romantic, your existance makes things light up and that's the best part.</p>
+      <p>We both do our own things for a while, but there's something conforting about it not needing constant attention to feel close.</p>
+      <p>A complete random thought turns into a conversation, then another, until neither of us remembers how it started.</p>
+      <p>One tiny tease becomes another. Someone pretends to be offended while the other persuades and few minutes later we are both laughing.</p>
+      <p>No big moments, no grand gesture. Just the quiet feeling that <em>I'm here, and you are here and that's enough.</em></p>
+      <p>Annoy each other</p>
+      <p class="quote">Because apparently peace was never the goal. </p>
+      <p>You better tease me irritate me while I'm busy or else be ready to persuade me for not irritating me.</p>
+      
+      
+      <div class="buttons">
+        <button class="primary" onclick="goTo(4)">next →</button>
+      </div>
+
+      <div class="nav">
+        <button class="back" onclick="goTo(2)"><span class="heart">♥</span>back</button>
+      </div>
+    </section>
+
+    <section class="page center" data-page="4">
+      <div class="romance-bg" aria-hidden="true">
+        <span class="heart">♥</span>
+        <span class="heart2">♡</span>
+        <span class="sparkle">✦</span>
+        <span class="star">★</span>
+        <span class="kiss">💋</span>
+        <span class="heart">❤</span>
+        <span class="sparkle">✧</span>
+        <span class="heart2">💕</span>
+        <span class="star">☆</span>
+        <span class="kiss">💋</span>
+      </div>
+
+      <div class="eyebrow">AFTERNOON</div>
+      <h2>Things May Get Intense</h2>
+      <div class="divider"></div>
+      <p>Maybe we talk about things we have never had the time to say properly. Somewhere in between all those words, we remember why talking to each other feels like coming home.</p>
+      <p>Well it's already after noon its time for us to get ready to go outside and have a nice time. I know you will be lazy so I'll have to pick you up saying <em>areee jaaannnuu chalo let's get ready hume bahar bhi jaana</em> and tease you for a nice hot shower together.</p>
+      <p>I puck you up in my arms kissing you sand saying chalo ab be a good gurl <em>my good gurl</em> take you to the room get two towels. Hold your hands leading you for a shower.</p>
+      <p>I turn on the shower with our clothes still on getting drenched together, looking into each other's eyes, uff your nipples tracing over the shirt and taking the shape of you boob. We then undress ourselves with our heart racing.</p>
+      <p>I turn you around and grab you from the back, digging my face in your neck, letting my cock grow big and hard as I crease your boob, you ask ab late nhi ho raha for the evening plans and I say this is the part of the plan babygurll.</p>
+      <p>Slowly things start being intense and we turn to each other kissing madly, letting our tongue involved, I push you against the wall, turn the shower towards you, get down on my kees and lift your one leg keep it up on my shoulder and eat your pussy, drink each drop that drips out of your pussy while your grab my hair and keep your hand on my shoulder for support. I eat your pussy till you cum, till your legs shiver and your voice gets deep.</p>
+      <p>Then maybe we both sit down on the floot with hot shower running over us, pulll you close in my lap, make you take my cock inside your pussy, grab and help your hips to ride my cock making it go in and out slowly as I start sucking on your boob sometimes kissing your neck or locking your lips between mine and kissing passionately.</p>
+      <p>Slowly we reach our peak and cum, we take sometime to get up.</p>
+      <p>Then we start to actually shower together helping each other with shampoo and bodywash, I take care of you helping you clean yourself, place many more soft kisses all over your body.</p>
+      <p>After we shower I take the towel weapr it around my waist and help you first wiping your body with it and then wrap the towel around you. Hope you wait for me to wipe my body as well.</p>
+      <p>We step out and you choose my outfit and I will wear that, I choose a couple for you but I know you will choose a different outfir but that's fine I will love it.</p>
+      <p>I get ready while you are done chosing your outfit. Then I would love to help you from wearing you bra n underpants to your complete outfit.</p>
+      <p>And yes some light makeup. I want to help you with that as well, and finally just before evening we are ready to leave. </p>
+      <p class="quote">To have a lovely time outside.</p>
+
+      <div class="buttons">
+        <button class="primary" onclick="goTo(5)">next →</button>
+      </div>
+
+      <div class="nav">
+        <button class="back" onclick="goTo(3)"><span class="heart">♥</span>back</button>
+      </div>
+    </section>
+
+    <section class="page center" data-page="5">
+      <div class="romance-bg" aria-hidden="true">
+        <span class="heart">♥</span>
+        <span class="heart2">♡</span>
+        <span class="sparkle">✦</span>
+        <span class="star">★</span>
+        <span class="kiss">💋</span>
+        <span class="heart">❤</span>
+        <span class="sparkle">✧</span>
+        <span class="heart2">💕</span>
+        <span class="star">☆</span>
+        <span class="kiss">💋</span>
+      </div>
+
+      <div class="eyebrow">EVENING</div>
+      <h2>The Light Starts Disappearing</h2>
+      <div class="divider"></div>
+      <p>The day slows down.</p>
+      <p>First thing we do is find a cute cafe to have something to eat first. Maybe cold or hot coffee depends, fries, momo or pasta or something good from the menu keeping it light so that we can have something for dinner later.</p>
+      <p>I will be having my arms around your patli kamar, I will feed you the first bite from everything and let you take the first sip from my coffee or milkshake. Then we finish our food and take our time to move to the next place.</p>
+      <p>We go to a mall roam around in every shop and have a look at everyhting, I wouldn't even think before pulling you to buy you jhumka, wasit chain, anklet, rings amd even mehendi which we can work on how to draw with it over your hand and you can check if it turns out to be dark or not.</p>
+      <p>Then probably a couple of books which you would be reading with a coffee while being in my arms. Then a few clothes where you cry for buying so many more but I pull you away saying are you a good gurl or a bad gurl and eventually you stop asking for all the outfits and choose 2-3, later I take you to the food court and buy you ice-cream to persuade you, and a prettly bouquet matching with yoru dress maybe.</p>
+      <p>Then we roam around see if we can find something more. Later we go to the arcade area let's see what we can play there something fun for you.</p>
+      <p>After we are don hopping from every shops in the mall and done witht the arcade, we go out to a nice restaurant some rooftop cafe or any other romantic ambiance restaurant, will order just one serving of food, we share it I know you will eat less, it's fine I'll finish the rest.</p>
+      <p>In the end we order some cake cheesecake or some pastry or brownie maybe we eat it there and ask for a few to pack it for us we can have it later at home, you in my arms sharing the same cake where I feed you while you stay in my arms kissing your head.</p>
+      <p>After dinner we go back home I carry all the shopping bags in both hands and you ask me to hold your hand, I point my finger <em>lo you can hold my finger</em> you grab my finger and my arm as we walk back to the room.</p>
+      
+      <div class="buttons">
+        <button class="primary" onclick="goTo(6)">next →</button>
+      </div>
+
+      <div class="nav">
+        <button class="back" onclick="goTo(4)"><span class="heart">♥</span>back</button>
+      </div>
+    </section>
+
+    <section class="page center" data-page="6">
+      <div class="romance-bg" aria-hidden="true">
+        <span class="heart">♥</span>
+        <span class="heart2">♡</span>
+        <span class="sparkle">✦</span>
+        <span class="star">★</span>
+        <span class="kiss">💋</span>
+        <span class="heart">❤</span>
+        <span class="sparkle">✧</span>
+        <span class="heart2">💕</span>
+        <span class="star">☆</span>
+        <span class="kiss">💋</span>
+      </div>
+
+      <div class="eyebrow">The Night</div>
+      <h2>Everything Becomes Softer</h2>
+      <div class="divider"></div>
+      <p>Lay down on the couch as we enter being tired but yet happy and felling fulfilled, you come on top of me for a kiss, or just to rest.</p>
+      <p>We rest in the quietness</p>
+      <p class="quote">Maybe the quiet is part of the memory.</p>
+      <p>I then lift you up take you to the room </p>
+      <p>I braid your hair, bring a wet towel wipe your face as well.</p>
+      <p>I you want we can have the cake that we brought, I'll keep water and cookie or something slaty for you to munch on if you wake up. Yeah so don't wake me up for sleep okayy. <em>Let your panda sleep.</em></p>
+      <p>Then we get under the sheets again, maybe toss the clothes away again on the floor, just so we can be even closer and share the warmth of each other's body, where nothing separated us. And will be easy if things get hot it will be easy.....</p>
+      <p>We keep talking even though we are tired, sometimes the conversation is too good to end or the moment too warm to let it fade. </p>
+      <P>Just closeness. A hand held. A head resting where it feels safe.</P>
+      <p>Just two people who spent an entire day choosing each other in little ways.</p>
+      <p>The conversation gets quieter, room gets darker, the world goes silent.</p>
+      <p>And we are left with the same thing we had the night before : each other</p>
+      <p class="quote">And somewhere between waking up, laughing, talking, teasing, being quiet, and watching the sun disappear, we made another day that belongs only to us.</p>
+
+      <div class="nav">
+        <button class="back" onclick="goTo(5)"><span class="heart">♥</span>back</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  function goTo(n){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    const target=document.querySelector('[data-page="'+n+'"]');
+    if(target) target.classList.add('active');
+  }
+</script>
+</body>
+</html>
